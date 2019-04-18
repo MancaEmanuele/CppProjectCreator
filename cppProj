@@ -1,0 +1,87 @@
+#!/bin/bash
+
+showHelp()
+{
+	echo "Syntax: cppProj [PROJECT NAME/PROJECT PATH/remove/--help] [OPTION] [VALUE]"
+	echo "If no options are specified, an empty project will be created"
+	echo "Options:"
+	echo -e "\tremove\n\t\tUnistall the program\n"
+	echo -e "\t-addclass\n\t\tFollowed by a string (without \" or '),\n\t\tcreates source, header and object file for a new class"
+	echo -e "\t-con\n\t\tCreate a console project.\n"
+	echo -e "\t--help\n\t\tShow this list\n"
+	exit 0
+}
+
+exec 2> /dev/null
+
+TEMPLATE_PATH="/usr/share/CppProjTemplate"
+
+if [ ! -n "$1" ]
+then
+	showHelp
+	exit 1
+fi
+
+if [ "$1" = "remove" ]
+then
+	sudo rm -r /usr/share/CppProjTemplate
+	sudo rm -r /usr/bin/cppProj
+	exit 0
+
+elif [ "$1" = "--help" ] || [ "$1" = "-h" ]
+then
+	showHelp
+
+elif [ -d "$1" ] && [ -d "$1/src" ]
+then
+	if [ "$2" = "-addclass" ]
+	then
+		if [ ! -n "$3" ]
+		then
+			echo Error: name of class unspecified
+			exit 1
+		fi
+			cp $TEMPLATE_PATH/obj/class.o $1/obj/$3.o
+
+			sed s/???/$3/g $TEMPLATE_PATH/src/class.cpp > $1/src/$3.cpp
+			sed s/???/$3/g $TEMPLATE_PATH/lib/class.h > $1/lib/$3.h
+			sed -i "s/insert-date/$(date)/g" $1/lib/$3.h
+
+			exit 0
+	else
+			cd $1
+			mate-terminal --geometry=90x43+50+50
+			mate-terminal --geometry=90x24+50+580 -e gdb
+			atom ./src
+			exit 0
+	fi
+fi
+
+mkdir $1
+mkdir $1/src
+mkdir $1/lib
+mkdir $1/obj
+touch $1/makefile
+
+# se è presente il secondo parametro
+if [ -n "$2" ]
+then
+	# se è "-con"
+	if [ "$2" = "-con" ] || [ "$2" = "-console" ]
+	then
+		cp $TEMPLATE_PATH/src/main.cpp $1/src/
+		cp $TEMPLATE_PATH/obj/main.o $1/obj/
+		cp $TEMPLATE_PATH/makeconsole $1/makefile
+
+	else
+		echo -e "Error: unknown command $2\n"
+		showHelp
+		exit 1
+	fi
+
+else
+	echo -e "Error: unknown command $1\n"
+	showHelp
+	exit 1
+fi
+exit 0
