@@ -20,6 +20,6 @@ To create a **new project**:
 ###### Create an empty project called Test
 >   cppProj Test
 
-To **add a class** to an extristing project:
+To **add a class** to an exstisting project:
 ###### Add a new class called ClassTest in Test
 >   cppProj Test -addclass ClassTest
