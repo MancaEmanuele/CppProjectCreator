@@ -1,12 +1,12 @@
 
 install:
-	cp cppProj /usr/bin/
+	cp CppProj /usr/bin/
 	cp -r CppProjTemplate /usr/share/
-	chmod +x /usr/bin/cppProj
+	chmod +x /usr/bin/CppProj
 	
 remove:
 	rm -r /usr/share/CppProjTemplate
-	rm -r /usr/bin/cppProj
+	rm -r /usr/bin/CppProj
 
 update:
 	sudo make remove

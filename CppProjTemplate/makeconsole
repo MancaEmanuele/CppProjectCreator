@@ -1,15 +1,15 @@
 # This makefile was created automatically
 
-CXXFLAGS = -Wall -Wextra
+CXXFLAGS = -Wall -Wextra -fpermissive
 
-Release: obj/main.o
-	g++ $(CXXFLAGS) -o ReleaseProgram obj/main.o obj/class.o
+Release: obj/*.o
+	g++ $(CXXFLAGS) -o Release_Program obj/*.o
 
-obj/main.o: src/main.cpp
-	g++ $(CXXFLAGS) -o obj/main.o -c src/main.cpp
+.o.cpp:
+	g++ $(CXXFLAGS) -o obj/*.o -c src/*.cpp
 
-Debug: src/main.cpp
-	g++ $(CXXFLAGS) -g -o DebugProgram src/main.cpp
+Debug: src/*.cpp
+	g++ $(CXXFLAGS) -g -o Debug_Program src/*.cpp
 
 .PHONY: clear
 clear:

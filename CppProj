@@ -49,11 +49,7 @@ then
 
 			exit 0
 	else
-			cd $1
-			mate-terminal --geometry=90x43+50+50
-			mate-terminal --geometry=90x24+50+580 -e gdb
-			atom ./src
-			exit 0
+		code $1
 	fi
 fi
 
@@ -71,17 +67,11 @@ then
 	then
 		cp $TEMPLATE_PATH/src/main.cpp $1/src/
 		cp $TEMPLATE_PATH/obj/main.o $1/obj/
-		cp $TEMPLATE_PATH/makeconsole $1/makefile
+		sed s/Program/$1/g $TEMPLATE_PATH/makeconsole > $1/makefile
 
 	else
 		echo -e "Error: unknown command $2\n"
 		showHelp
 		exit 1
 	fi
-
-else
-	echo -e "Error: unknown command $1\n"
-	showHelp
-	exit 1
-fi
 exit 0
